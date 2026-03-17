@@ -1,0 +1,32 @@
+{
+  "name": "vivi_minuReact",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx --fix --quiet ./packages",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.32.1",
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@eslint/css": "^1.0.0",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^1.1.0",
+    "@eslint/markdown": "^7.5.1",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.1",
+    "typescript-eslint": "^8.57.1"
+  },
+  "dependencies": {
+    "typescript": "^5.9.3"
+  }
+}

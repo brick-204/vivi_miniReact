@@ -1,4 +1,2 @@
 #!/usr/bin/env sh
-pnpm exec husky run "$0" "$@"
-
 pnpm exec commitlint --edit "$1"

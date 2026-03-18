@@ -27,14 +27,14 @@ const ReactElement = function (
 	return element;
 };
 
-export const jsx = (type: ElementType, config: any, ...maybeChildren: any) => {
+export const jsx = (type: ElementType, config: Props, ...maybeChildren: unknown[]) => {
 	let key: Key = null;
 	const props: Props = {};
 	let ref: Ref = null;
 
   // 处理config中的key和ref, 其他属性注入 props 中
 	for (const prop in config) {
-		const val = config[props];
+		const val = config[prop];
 		if (prop === 'key') {
 			if (val !== undefined) {
 				key = '' + val;
@@ -43,7 +43,7 @@ export const jsx = (type: ElementType, config: any, ...maybeChildren: any) => {
 		}
 		if (prop === 'ref') {
 			if (val !== undefined) {
-				ref = val;
+				ref = val as Ref;
 			}
 			continue;
 		}
@@ -64,3 +64,4 @@ export const jsx = (type: ElementType, config: any, ...maybeChildren: any) => {
 
 // 生产环境和开发环境一致
 export const jsxDev = jsx;
+export const jsxDEV = jsx;

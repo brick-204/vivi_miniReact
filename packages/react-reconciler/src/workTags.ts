@@ -1,11 +1,13 @@
+// fiber 节点类型
+
 export type WorkTag =
 	| typeof FunctionComponent
 	| typeof HostRoot
 	| typeof HostComponent
 	| typeof HostText;
 
-export const FunctionComponent = 0;
-export const HostRoot = 3;
+export const FunctionComponent = 0;  // 函数组件
+export const HostRoot = 3;   // 根节点(容器根)
 
-export const HostComponent = 5;
-export const HostText = 6;
+export const HostComponent = 5;  // 宿主组件（具体的 Dom div等）
+export const HostText = 6;  // 文本节点

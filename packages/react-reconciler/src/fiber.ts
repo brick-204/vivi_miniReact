@@ -1,6 +1,7 @@
-import { Props, Key, Ref } from 'shared/ReactTypes';
-import { WorkTag } from './workTags';
+import { Props, Key, Ref, ReactElementType } from 'shared/ReactTypes';
+import { FunctionComponent, HostComponent, WorkTag } from './workTags';
 import { Flags, NoFlags } from './fiberFlags';
+import { Container } from 'hostConfig';
 
 export class FiberNode {
 	type: any;
@@ -16,8 +17,11 @@ export class FiberNode {
 	ref: Ref | null;
 
 	memoizedProps: Props | null;
-  alternate: FiberNode | null;
-  flags: Flags;
+	memoizedState: any;
+	alternate: FiberNode | null;
+	flags: Flags;
+  subtreeFlag:Flags;
+	updateQueue: unknown;
 
 	constructor(tag: WorkTag, pendingProps: Props, key: Key) {
 		// 实例
@@ -42,9 +46,70 @@ export class FiberNode {
 		// 工作单元
 		this.pendingProps = pendingProps;
 		this.memoizedProps = null;
+		this.memoizedState = null;
+		this.updateQueue = null;
 
-    this.alternate = null;
-    // 副作用
-    this.flags = NoFlags;
+		this.alternate = null;
+		// 副作用
+		this.flags = NoFlags;
+    this.subtreeFlag = NoFlags
 	}
+}
+
+export class FiberRootNode {
+	container: Container;
+	current: FiberNode;
+	finishedWork: FiberNode | null;
+	constructor(container: Container, hostRootFiber: FiberNode) {
+		this.container = container;
+		this.current = hostRootFiber;
+		hostRootFiber.stateNode = this;
+		this.finishedWork = null;
+	}
+}
+
+// 双缓存机制，依照 hostRootNode 的 alternate 镜像寻找或者 镜像创造另一棵树 workInProgress
+export const createWorkInProgress = (
+	current: FiberNode,
+	pendingProps: Props
+): FiberNode => {
+	let wip = current.alternate;
+
+	if (wip === null) {
+		// mount
+		wip = new FiberNode(current.tag, pendingProps, current.key);
+		wip.type = current.type;
+		wip.stateNode = current;
+
+		wip.alternate = current;
+		current.alternate = wip;
+	} else {
+		// update
+		wip.pendingProps = pendingProps;
+		wip.flags = NoFlags;
+    // 孩子节点的 flags 的富集
+    wip.subtreeFlag = NoFlags;
+	}
+	wip.type = current.type;
+	wip.updateQueue = current.updateQueue;
+	wip.child = current.child;
+	wip.memoizedProps = current.memoizedProps;
+	wip.memoizedState = current.memoizedState;
+
+	return wip;
+};
+
+export function createFiberFromElement(element: ReactElementType): FiberNode {
+	const { type, key, props } = element;
+	let fiberTag: WorkTag = FunctionComponent;
+
+	if (typeof type === 'string') {
+		// <div/> type: 'div'
+		fiberTag = HostComponent;
+	} else if (typeof type !== 'function' && __DEV__) {
+		console.warn('未定义的类型', element);
+	}
+	const fiber = new FiberNode(fiberTag, props, key);
+	fiber.type = type;
+	return fiber;
 }

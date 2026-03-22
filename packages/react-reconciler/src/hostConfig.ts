@@ -1,14 +1,19 @@
+// 宿主（浏览器）环境中的方法
+
 export type Container = any;
 
+export const createInstance = (...args: any) => {
+	return {} as any;
+};
 
-export const createInstance = (...args:any)=>{
-  return {} as any
-}
+export const appendInitialChild = (...args: any) => {
+	return {} as any;
+};
 
-export const appendInitialChild = (...args:any) => {
+export const createTextInstance = (...args: any) => {
+	return {} as any;
+};
 
-}
-
-export const createTextInstance = (...args:any) => {
-  
-}
+export const appendChildToContainer = (...args: any) => {
+	return {} as any;
+};

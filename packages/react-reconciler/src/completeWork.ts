@@ -79,17 +79,17 @@ function appendAllChildren(parent: FiberNode, wip: FiberNode) {
 }
 
 // 归冒泡处理副作用 flags
-// 将当前 wip 节点的子节点及其子节点的兄弟节点的 flags 冒泡富集到 subtreeFlag
+// 将当前 wip 节点的子节点及其子节点的兄弟节点的 flags 冒泡富集到 subtreeFlags
 function bubbleProperties(wip: FiberNode) {
-	let subtreeFlag = NoFlags;
+	let subtreeFlags = NoFlags;
 	let child = wip.child;
 
 	while (child !== null) {
-		subtreeFlag |= child.subtreeFlag;
-		subtreeFlag |= child.flags;
+		subtreeFlags |= child.subtreeFlags;
+		subtreeFlags |= child.flags;
 
 		child.return = wip;
 		child = child.sibling;
 	}
-	wip.subtreeFlag |= subtreeFlag;
+	wip.subtreeFlags |= subtreeFlags;
 }

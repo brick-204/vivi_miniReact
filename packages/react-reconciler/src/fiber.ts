@@ -20,7 +20,7 @@ export class FiberNode {
 	memoizedState: any;
 	alternate: FiberNode | null;
 	flags: Flags;
-  subtreeFlag:Flags;
+  subtreeFlags:Flags;
 	updateQueue: unknown;
 
 	constructor(tag: WorkTag, pendingProps: Props, key: Key) {
@@ -52,7 +52,7 @@ export class FiberNode {
 		this.alternate = null;
 		// 副作用
 		this.flags = NoFlags;
-    this.subtreeFlag = NoFlags
+    this.subtreeFlags = NoFlags
 	}
 }
 
@@ -88,7 +88,7 @@ export const createWorkInProgress = (
 		wip.pendingProps = pendingProps;
 		wip.flags = NoFlags;
     // 孩子节点的 flags 的富集
-    wip.subtreeFlag = NoFlags;
+    wip.subtreeFlags = NoFlags;
 	}
 	wip.type = current.type;
 	wip.updateQueue = current.updateQueue;

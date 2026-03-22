@@ -23,7 +23,7 @@ export function getPackageJson(pkName) {
 
 // 为 rollup 注入支持 typescript 编译和 commonjs 编译的插件
 export function getBaseRollupPlugins({
-	alias = { __DEV__: true },
+	alias = { __DEV__: true, preventAssignment: true },
 	typescript = {}
 } = {}) {
 	return [replace(alias), cjs(), ts(typescript)];

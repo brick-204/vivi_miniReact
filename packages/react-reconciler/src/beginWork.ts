@@ -46,14 +46,14 @@ function updateHostComponent(wip: FiberNode) {
 	return wip.child;
 }
 
-function reconcileChildren(wip: FiberNode, children?: ReactElementType) {
+function reconcileChildren(wip: FiberNode, children?: unknown) {
 	const current = wip.alternate;
 
 	if (current !== null) {
 		// update
-		wip.child = reconcileChildFibers(wip, current?.child, children);
+		wip.child = reconcileChildFibers(wip, current?.child, children as ReactElementType);
 	} else {
 		// mount
-		wip.child = mountChildFibers(wip, null, children);
+		wip.child = mountChildFibers(wip, null, children as ReactElementType);
 	}
 }

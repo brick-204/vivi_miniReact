@@ -1,5 +1,6 @@
 import {
 	appendInitialChild,
+	Container,
 	createInstance,
 	createTextInstance
 } from 'hostConfig';
@@ -20,7 +21,7 @@ export const completeWork = (wip: FiberNode) => {
 				// mount
 				// 构建离屏dom
 				// instance 是宿主环境的实例，即 dom fiber
-				const instance = createInstance(wip.type, newProps);
+				const instance = createInstance(wip.type);
 				// 将孩子节点插入到 instance 树下
 				appendAllChildren(instance, wip);
 				//
@@ -35,7 +36,7 @@ export const completeWork = (wip: FiberNode) => {
 				// mount
 				// 构建离屏dom
 				// instance 是宿主环境的实例，即 dom fiber
-				const instance = createTextInstance(newProps.content);
+				const instance = createTextInstance(newProps.content as string);
 				wip.stateNode = instance;
 			}
 			bubbleProperties(wip);
@@ -51,7 +52,7 @@ export const completeWork = (wip: FiberNode) => {
 	}
 };
 
-function appendAllChildren(parent: FiberNode, wip: FiberNode) {
+function appendAllChildren(parent: Container, wip: FiberNode) {
 	let node = wip.child;
 
 	while (node !== null) {

@@ -50,11 +50,13 @@ const commitPlacement = (finishedWork: FiberNode) => {
 	}
 	// 找到 parent dom
 	const hostParent = getHostParent(finishedWork);
-  appendPlacementNodeIntoContainer(finishedWork, hostParent)
+	if (hostParent !== null) {
+		appendPlacementNodeIntoContainer(finishedWork, hostParent);
+	}
 };
 
 // 获取父母fiber 的 dom 实例
-function getHostParent(fiber: FiberNode): Container {
+function getHostParent(fiber: FiberNode): Container | null {
 	let parent = fiber.return;
 
 	while (parent) {
@@ -70,6 +72,7 @@ function getHostParent(fiber: FiberNode): Container {
 	if (__DEV__) {
 		console.warn('未找到HostParent');
 	}
+	return null;
 }
 
 // 使该层节点以及兄弟节点添加到 hostParent 下
@@ -77,17 +80,17 @@ function appendPlacementNodeIntoContainer(
 	finishedWork: FiberNode,
 	hostParent: Container
 ) {
-  if (finishedWork.tag === HostComponent || finishedWork.tag === HostText) {
-    appendChildToContainer(finishedWork.stateNode, hostParent)
-    return;
-  }
-  const child = finishedWork.child;
-  if (child !== null) {
-    appendPlacementNodeIntoContainer(child, hostParent);
-    let sibling = child.sibling;
-    while(sibling !== null) {
-      appendPlacementNodeIntoContainer(sibling, hostParent);
-      sibling = sibling.sibling;
-    }
-  }
+	if (finishedWork.tag === HostComponent || finishedWork.tag === HostText) {
+		appendChildToContainer(finishedWork.stateNode, hostParent);
+		return;
+	}
+	const child = finishedWork.child;
+	if (child !== null) {
+		appendPlacementNodeIntoContainer(child, hostParent);
+		let sibling = child.sibling;
+		while (sibling !== null) {
+			appendPlacementNodeIntoContainer(sibling, hostParent);
+			sibling = sibling.sibling;
+		}
+	}
 }

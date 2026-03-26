@@ -7,6 +7,7 @@ import {
 import { FiberNode } from './fiber';
 import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTags';
 import { NoFlags, Update } from './fiberFlags';
+import { updateFiberProps } from 'react-dom/src/SyntheicEvent';
 
 function markUpdate(fiber:FiberNode) {
   fiber.flags |= Update;
@@ -21,11 +22,12 @@ export const completeWork = (wip: FiberNode) => {
 		case HostComponent:
 			if (current !== null && wip.stateNode) {
 				// update
+        updateFiberProps(wip.stateNode, newProps);
 			} else {
 				// mount
 				// 构建离屏dom
 				// instance 是宿主环境的实例，即 dom fiber
-				const instance = createInstance(wip.type);
+				const instance = createInstance(wip.type, newProps);
 				// 将孩子节点插入到 instance 树下
 				appendAllChildren(instance, wip);
 				//
@@ -36,7 +38,7 @@ export const completeWork = (wip: FiberNode) => {
 		case HostText:
 			if (current !== null && wip.stateNode) {
 				// update
-        const oldText = current.memoizedProps.content;
+        const oldText = current.memoizedProps?.content;
         const newText = newProps.content;
         if (oldText !== newText) {
           markUpdate(wip);

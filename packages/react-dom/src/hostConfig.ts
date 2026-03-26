@@ -1,16 +1,19 @@
 // 宿主（如浏览器、项目）环境中的方法
 
 import { FiberNode } from 'react-reconciler/src/fiber';
-import { HostText } from 'react-reconciler/src/workTags';
+import { HostComponent, HostText } from 'react-reconciler/src/workTags';
+import { DOMElement, updateFiberProps } from './SyntheicEvent';
+import { Props } from 'shared/ReactTypes';
 
 export type Container = Element; // 外壳组件挂载的 dom
 export type Instance = Element; // 普通的 dom 实例
 export type TextInstance = Text; // 文本实例
 
-export const createInstance = (type: string): Instance => {
+export const createInstance = (type: string, props:Props): Instance => {
 	// TODO 处理 props
-	const element = document.createElement(type);
-	return element;
+	const element = document.createElement(type) as unknown;
+  updateFiberProps(element as DOMElement, props)
+	return element as DOMElement;
 };
 
 export const appendInitialChild = (

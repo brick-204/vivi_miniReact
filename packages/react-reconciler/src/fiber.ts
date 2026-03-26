@@ -6,7 +6,7 @@ import { Container } from 'hostConfig';
 export class FiberNode {
 	type: any;
 	tag: WorkTag;
-	pendingProps: Props | null;
+	pendingProps: Props;
 	key: any;
 	stateNode: any;
 
@@ -20,9 +20,9 @@ export class FiberNode {
 	memoizedState: any;
 	alternate: FiberNode | null;
 	flags: Flags;
-  subtreeFlags:Flags;
+	subtreeFlags: Flags;
 	updateQueue: unknown;
-  deletions:FiberNode[] | null;
+	deletions: FiberNode[] | null;
 
 	constructor(tag: WorkTag, pendingProps: Props, key: Key) {
 		// 实例
@@ -53,8 +53,8 @@ export class FiberNode {
 		this.alternate = null;
 		// 副作用
 		this.flags = NoFlags;
-    this.subtreeFlags = NoFlags
-    this.deletions = null;
+		this.subtreeFlags = NoFlags;
+		this.deletions = null;
 	}
 }
 
@@ -89,9 +89,9 @@ export const createWorkInProgress = (
 		// update
 		wip.pendingProps = pendingProps;
 		wip.flags = NoFlags;
-    // 孩子节点的 flags 的富集
-    wip.subtreeFlags = NoFlags;
-    wip.deletions = null;
+		// 孩子节点的 flags 的富集
+		wip.subtreeFlags = NoFlags;
+		wip.deletions = null;
 	}
 	wip.type = current.type;
 	wip.updateQueue = current.updateQueue;

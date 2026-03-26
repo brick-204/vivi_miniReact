@@ -27,12 +27,24 @@ const ReactElement = function (
 	return element;
 };
 
-export const jsx = (type: ElementType, config: Props, ...maybeChildren: unknown[]) => {
+export function isValidElement(object: any) {
+	return (
+		typeof object === 'object' &&
+		object !== null &&
+		object.$$typeof === REACT_ELEMENT_TYPE
+	);
+}
+
+export const jsx = (
+	type: ElementType,
+	config: Props,
+	...maybeChildren: unknown[]
+) => {
 	let key: Key = null;
 	const props: Props = {};
 	let ref: Ref = null;
 
-  // 处理config中的key和ref, 其他属性注入 props 中
+	// 处理config中的key和ref, 其他属性注入 props 中
 	for (const prop in config) {
 		const val = config[prop];
 		if (prop === 'key') {
@@ -59,7 +71,7 @@ export const jsx = (type: ElementType, config: Props, ...maybeChildren: unknown[
 			props.children = maybeChildren;
 		}
 	}
-  return ReactElement(type, key, ref, props);
+	return ReactElement(type, key, ref, props);
 };
 
 export const jsxDEV = (type: ElementType, config: Props) => {
@@ -67,7 +79,7 @@ export const jsxDEV = (type: ElementType, config: Props) => {
 	const props: Props = {};
 	let ref: Ref = null;
 
-  // 处理config中的key和ref, 其他属性注入 props 中
+	// 处理config中的key和ref, 其他属性注入 props 中
 	for (const prop in config) {
 		const val = config[prop];
 		if (prop === 'key') {
@@ -86,5 +98,5 @@ export const jsxDEV = (type: ElementType, config: Props) => {
 			props[prop] = val;
 		}
 	}
-  return ReactElement(type, key, ref, props);
+	return ReactElement(type, key, ref, props);
 };
